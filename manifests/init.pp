@@ -1,7 +1,11 @@
 class augeas {
-  case $::operatingsystem {
-    /RedHat|CentOS|Fedora/:   { include augeas::redhat }
-    /Debian|Ubuntu|kFreeBSD/: { include augeas::debian }
-    default:                  { include augeas::base }
+  $subclass = $::operatingsystem ? {
+    /RedHat|CentOS|Fedora/    => "augeas::redhat",
+    /Debian|Ubuntu|kFreeBSD/  => "augeas::debian",
+    default                   => "augeas::base",
   }
+  include $subclass  
+  anchor { 'augeas::end':
+    require => Class[$subclass],
+  }  
 }
