@@ -4,7 +4,7 @@ class augeas {
     /Debian|Ubuntu|kFreeBSD/  => "augeas::debian",
     default                   => "augeas::base",
   }
-  include $subclass  
+  class {$subclass: }  
   anchor { 'augeas::end':
     require => Class[$subclass],
   }  
